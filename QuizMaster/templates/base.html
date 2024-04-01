@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/android-chrome-512x512.png' %}">
+    <title>QuizMaster | {% block title %}{% endblock title%}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <!-- custom css and scripts -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    {% block scripts %}
+    {% endblock scripts %}
+</head>
+<body>
+    <div class="container mt-3">
+        {% block page_content %}
+        {% endblock page_content %}
+    </div>
+    <script>https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js</script>
+</body>
+</html>
