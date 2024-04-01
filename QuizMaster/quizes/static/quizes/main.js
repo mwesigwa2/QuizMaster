@@ -10,7 +10,7 @@ const startBtn = document.getElementById('start-button')
 
 const url = window.location.href
 // Loop through each modal button
-modalBtns.forEach(modalBtn => modalBtn.addEventListener('click', () => {
+modalBtns.forEach(modalBtn=> modalBtn.addEventListener('click', () => {
     // Get the value of 'data-*' attributes from the modal button
     const pk = modalBtn.getAttribute('data-pk');
     const name = modalBtn.getAttribute('data-quiz');

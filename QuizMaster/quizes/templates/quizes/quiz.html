@@ -1,9 +1,23 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block scripts%}
+    <script src="{% static 'quizes/quiz.js' %}" defer></script>
+{% endblock scripts %}
 
 {% block title %}
 {{obj.name}}
 {% endblock title %}
 
 {% block page_content %}
-{{obj.name}}
+<b>{{obj.name}}</b>
+<p>Passing Score: {{obj.pass_mark}}%</p>
+
+<form id="quiz-form" class="mt-3 mb-3">
+    {% csrf_token%}
+    <div id="quiz-box"></div>
+    <button type="submit" class="btn btn-primary mt-3">save</button>
+</form>
+<div id="score-box"></div>
+<div id="result-box"></div>
 {% endblock page_content  %}
