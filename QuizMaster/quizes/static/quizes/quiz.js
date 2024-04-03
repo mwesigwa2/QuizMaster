@@ -35,15 +35,24 @@ const activateTimer = (time) => {
         if (minutes == 0 && seconds == 0) {
             // Display time over message and submit the quiz
             timerBox.innerHTML = '<b>00:00</b>';
+            clearInterval(timer);
             setTimeout(() => {
-                clearInterval(timer);
                 alert('Time Over');
                 sendData();
             }, 500);
+        } else {
+            // Update the timer display
+            timerBox.innerHTML = `<b>Time Left: ${displayMinutes}:${displaySeconds}</b>`;
         }
-        // Update the timer display
-        timerBox.innerHTML = `<b>Time Left: ${displayMinutes}:${displaySeconds}</b>`;
     }, 1000);
+
+    // Function to clear the timer
+    const clearTimer = () => {
+        clearInterval(timer);
+    };
+
+    // Return the clearTimer function
+    return clearTimer;
 };
 
 // Make an AJAX request to fetch data from the server
@@ -73,74 +82,81 @@ $.ajax({
             }
         });
         // Activate the timer with the time received
-        activateTimer(response.time);
+        const clearTimer = activateTimer(response.time);
+
+        // Get the quiz form and csrf token from the DOM
+        const quizForm = document.getElementById('quiz-form');
+        const csrf = document.getElementsByName('csrfmiddlewaretoken');
+
+        // Function to send data to the server
+        const sendData = () => {
+            // Get all selected answers
+            const elements = [...document.getElementsByClassName('ans')];
+            // Prepare data to be sent to the server
+            const data = { csrfmiddlewaretoken: csrf[0].value };
+            elements.forEach(el => {
+                if (el.checked) {
+                    data[el.name] = el.value;
+                } else {
+                    if (!data[el.name]) {
+                        data[el.name] = null;
+                    }
+                }
+            });
+            // Make an AJAX request to save data on the server
+            $.ajax({
+                type: 'POST',
+                url: `${url}save/`, // Endpoint to save quiz data
+                data: data,
+                success: function(response) {
+                    const results = response.results;
+                    console.log(results);
+                    quizForm.classList.add('not-visible');
+                    // Display quiz result
+                    scoreBox.innerHTML = `${response.passed ? 'Congratulations! ' : 'Oops...:( '} Your result is ${response.score.toFixed(2)}%`;
+                    // Display individual question results
+                    results.forEach(res => {
+                        const resDiv = document.createElement("div")
+                        for (const [question, resp] of Object.entries(res)) {
+                            resDiv.innerHTML += question
+                            const cls = ['container', 'p-3', 'text-light', 'h6']
+                            resDiv.classList.add(...cls)
+
+                            if (resp=='not answered') {
+                                resDiv.innerHTML += ' - not answered'
+                                resDiv.classList.add('bg-danger')
+                                //resDiv.innerHTML += ` | correct answer: ${correct}`
+
+                            } else {
+                                const answer = resp['answered'];
+                                const correct = resp['correct_answer'];
+                                if (answer == correct) {
+                                    resDiv.classList.add('bg-success');
+                                    resDiv.innerHTML += ` answered: ${answer}`;
+                                } else {
+                                    resDiv.classList.add('bg-danger');
+                                    resDiv.innerHTML += ` | correct answer: ${correct}`;
+                                    resDiv.innerHTML += ` | answered: ${answer}`;
+                                }
+                            }
+                        }
+                        resultBox.append(resDiv);
+                    });
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        };
+
+        // Add event listener to the quiz form submission
+        quizForm.addEventListener('submit', e => {
+            e.preventDefault(); // Prevent default form submission behavior
+            sendData(); // Call sendData function to send data to the server
+            clearTimer(); // Clear the timer
+        });
     },
     error: function(error) {
         console.log(error);
     }
-});
-
-// Get the quiz form and csrf token from the DOM
-const quizForm = document.getElementById('quiz-form');
-const csrf = document.getElementsByName('csrfmiddlewaretoken');
-
-// Function to send data to the server
-const sendData = () => {
-    // Get all selected answers
-    const elements = [...document.getElementsByClassName('ans')];
-    // Prepare data to be sent to the server
-    const data = { csrfmiddlewaretoken: csrf[0].value };
-    elements.forEach(el => {
-        if (el.checked) {
-            data[el.name] = el.value;
-        } else {
-            if (!data[el.name]) {
-                data[el.name] = null;
-            }
-        }
-    });
-    // Make an AJAX request to save data on the server
-    $.ajax({
-        type: 'POST',
-        url: `${url}save/`, // Endpoint to save quiz data
-        data: data,
-        success: function(response) {
-            const results = response.results;
-            quizForm.classList.add('not-visible');
-            // Display quiz result
-            scoreBox.innerHTML = `${response.passed ? 'Congratulations! ' : 'Oops...:( '} Your result is ${response.score.toFixed(2)}%`;
-            // Display individual question results
-            results.forEach(res => {
-                const resDiv = document.createElement("div");
-                for (const [question, resp] of Object.entries(res)) {
-                    resDiv.innerHTML += question;
-                    resDiv.classList.add('container', 'p-3', 'text-light', 'h6');
-                    if (resp == 'not_answered') {
-                        resDiv.innerHTML += '- not answered';
-                        resDiv.classList.add('bg-danger');
-                    } else {
-                        const answer = resp['answered'];
-                        const correct = resp['correct_answer'];
-                        if (answer == correct) {
-                            resDiv.classList.add('bg-success');
-                            resDiv.innerHTML += ` answered: ${answer}`;
-                        } else {
-                            resDiv.classList.add('bg-danger');
-                            resDiv.innerHTML += ` | correct answer: ${correct} | answered: ${answer}`;
-                        }
-                    }
-                }
-                resultBox.append(resDiv);
-            });
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    });
-};
-
-// Add event listener to the quiz form submission
-quizForm.addEventListener('submit', e => {
-    e.preventDefault(); // Prevent default form submission behavior
-    sendData(); // Call sendData function to send data to the server
 });
