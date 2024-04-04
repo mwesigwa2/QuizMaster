@@ -10,15 +10,26 @@ This application comes with multiple-choice questions, scoring mechanisms, and t
     * Results Page
 
 ### Admin Account
-    * Login / Signup
+    * Login 
     * Question Bank (Add Questions)
-    * Quiz Page
-    * Results Page
+    * Create a quiz
+    * Add Answers
+    * View Results 
 
 ## Technologies used:
 Backend: Python - Django framework
 Database: MySQL
-Frontend: Html, Bootstrap, Javascript, CSS
+Frontend: Html, Bootstrap5, Javascript, CSS
+
+## Future work:
+The following have not been implemented, but will be implemented in the future:
+1. User profiles - capture and display of quiz details in the user's dashboard, user bio-data modification
+and update, password resets, etc
+2. extending the admin functionality to the frontend - ability to create questions, quizes, answers in the frontend.
+currently this functionality is only available in the administration backend.
+3. Exposing an API for adding and creating quizes and questions.
+4. Notification of quiz results to user emails, account creation and password reset emails.
+
 
 ## Contributor
 Timothy Kibirige <tmwesigwa2@gmail.com>
