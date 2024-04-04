@@ -29,22 +29,42 @@ Home
     </div>
 </div>
 
-<div class="h1"> Quiz List </div>
-<hr>
-{% for obj in object_list %}
-    <button
-        class="btn btn-link modal-button"
-        data-pk="{{obj.pk}}"
-        data-quiz="{{obj.name}}"
-        data-questions="{{obj.no_of_questions}}"
-        data-difficulty="{{obj.difficulty}}"
-        data-time="{{obj.time}}"
-        data-pass="{{obj.pass_mark}}"
-        data-bs-toggle="modal"
-        data-bs-target="#startQuizModal">
-        {{obj.name}}
-    </button><br>
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+			<h3>QuizMaster </h3>
+            <p>Select a quiz from the list below to begin. <br>Please note all quizes are timed. Once time is up, the quiz will be automatically submitted and scored!</p>
+        </div>
+<!--<div class="h1"> Quiz List </div>-->
+        <hr>
+        <div class="card card-body">
+			<table class="table">
+				<tr>
+					<th>Quiz Name</th>
 
-{% endfor%}
+				</tr>
+                {% for obj in object_list %}
+                <tr>
+                    <td>
+                        <button
+                        class="btn btn-link modal-button"
+                        data-pk="{{obj.pk}}"
+                        data-quiz="{{obj.name}}"
+                        data-questions="{{obj.no_of_questions}}"
+                        data-difficulty="{{obj.difficulty}}"
+                        data-time="{{obj.time}}"
+                        data-pass="{{obj.pass_mark}}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#startQuizModal">
+                        {{obj.name}}
+                        </button>
+                    </td>
+
+                </tr>
+                {% endfor%}
+            </table>
+        </div>
+    </div>
+</div>
 
 {% endblock page_content %}

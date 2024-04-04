@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{obj.name}}
+{% endblock title %}
+
+{% block page_content %}
+<b> {{obj.name}} </b>
+{% include 'quizes/status.html' %}
+<div class="row">
+    <div class="col-md-5">
+        <h5>QUIZ:</h5>
+        <hr>
+        <div class="card card-body">
+            <a class="btn btn-primary btn-sm btn-block" href="">Create Quiz</a>
+            <table class="table table-sm">
+                <tr>
+                    <th></th>
+                    <th>Quiz</th>
+                    <th>Questions</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <h5>LAST 5 QUESTIONS</h5>
+        <hr>
+        <div class="card card-body">
+            <a class="btn btn-primary btn-sm btn-block" href="">Create Question</a>
+            <table class="table table-sm">
+                <tr>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock page_content %}

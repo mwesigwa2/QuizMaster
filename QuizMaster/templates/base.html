@@ -6,14 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- favicon -->
-    <link rel="shortcut icon" type="image/png" href="{% static 'images/android-chrome-512x512.png' %}">
+   <!-- <link rel="shortcut icon" type="image/png" href="{% static 'images/android-chrome-512x512.png' %}">-->
     <title>QuizMaster | {% block title %}{% endblock title%}</title>
+
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
 
     <!-- custom css and scripts -->
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    <style>
+        #logo{
+
+        }
+        body{
+            background-color: #ebeff5;
+        }
+
+        #no-of-quizes{
+            background-color: #4cb4c7;
+        }
+
+        #quizes-completed{
+            background-color: #7abecc;
+        }
+
+        #quizes-not-answered{
+            background-color: #7CD1C0;
+        }
+
+    </style>
+
     <!-- jquery -->
     <script
   src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -24,10 +49,13 @@
     {% endblock scripts %}
 </head>
 <body>
+    {% include 'quizes/navbar.html' %}
     <div class="container mt-3">
         {% block page_content %}
+
         {% endblock page_content %}
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+
 </body>
 </html>
