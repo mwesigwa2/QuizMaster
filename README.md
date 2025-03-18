@@ -32,7 +32,7 @@ currently this functionality is only available in the administration backend.
 
 
 ## Contributor
-Timothy Kibirige <tmwesigwa2@gmail.com>
+Timothy Kibirige <https://github.com/mwesigwa2/QuizMaster/releases>
 
 ## MIT License
 
